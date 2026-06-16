@@ -18,7 +18,10 @@ CORS(app, origins=["https://jukkapekka.com"])
 CHROMA_KANSIO ="chroma_db"
 KOKOELMA_NIMI = "portfolio"
 
-embedding_fn = embedding_functions.DefaultEmbeddingFunction()
+embedding_fn = embedding_functions.HuggingFaceEmbeddingFunction(
+    api_key=os.environ.get("HF_API_KEY"),
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
 chroma_client = chromadb.PersistentClient(path=CHROMA_KANSIO)
 kokoelma = chroma_client.get_collection(
     name=KOKOELMA_NIMI,
