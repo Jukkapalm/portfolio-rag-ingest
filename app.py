@@ -52,7 +52,7 @@ def chat():
         return jsonify({"virhe": "Virheellinen kysymys"}), 400
     
     # Haetaan ChromaDB:stä relevantti konteksti
-    tulokset = kokoelma.query(
+    tulokset = hae_kokoelma().query(
         query_texts=[kysymys],
         n_results=3 # Haetaan 3 relevanttia palaa
     )
