@@ -36,7 +36,9 @@ def index():
 def chat():
     
     # Otetaan käyttäjän viesti
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({"virhe": "Virheellinen JSON"}), 400
     kysymys = data.get("kysymys", "").strip()
 
     # Validointi - max 500 merkkiä
