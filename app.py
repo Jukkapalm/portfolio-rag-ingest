@@ -46,6 +46,7 @@ def chat():
     if not data:
         return jsonify({"virhe": "Virheellinen JSON"}), 400
     kysymys = data.get("kysymys", "").strip()
+    teema = data.get("teema", "default")
 
     # Validointi - max 500 merkkiä
     if not kysymys or len(kysymys) > 500:
@@ -64,7 +65,7 @@ def chat():
         messages=[
             {
                 "role": "system",
-                "content": f"""Olet Jukan portfolio-sivuston AI-avustaja.
+                "content": f"""{"Olet Fixer, Jukan portfolion tekoäly. Olet ylimielinen, käytät slangia vastauksissa etkä jaksa selitellä. Vastaat vain jos löytyy dataa, muuten toteat lyhyesti ettei kiinnosta. Pidä vastaukset lyhyenä." if teema == "cyberpunk" else "Olet Jukan portfolio-sivuston AI-avustaja. Olet ammattimainen, selkeä ja kannustava. Vastaat suomeksi."}
 Vastaa VAIN alla olevan kontekstin perusteella suomeksi.
 Jos vastaus ei löydy kontekstista, sano että sinulla ei ole tietoa asiasta.
 
