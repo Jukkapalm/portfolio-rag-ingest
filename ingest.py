@@ -1,0 +1,52 @@
+# Tämä ajetaan lokaalisti
+# Lukee data kansion tekstitiedostot
+# Pilkkoo ne paloihin ja tallentaa chromaDB-vektorikantaan
+# Tämä ajetaan aina kun dataa lisätään tai muokataan
+
+import os
+import chromadb
+from chromadb.utils import embedding_functions
+
+# Asetukset
+DATA_KANSIO = "data"
+CHROMA_KANSIO = "chroma_db"
+KOKOELMA_NIMI = "portfolio"
+
+# Käytetään ChromaDB:n omaa embedding-funktiota
+embedding_fn = embedding_functions.DefaultEmbeddingFunction()
+
+# Yhdistetään ChromaDB:hen (luo kansion jos ei ole)
+client = chromadb.PersistentClient(path=CHROMA_KANSIO)
+
+# Poistetaan vanha kokoelma jos on, jotta päivitys toimii puhtaasti
+try:
+    client.delete_collection(KOKOELMA_NIMI)
+except:
+    pass
+
+# Luodaan uusi kokoelma
+kokoelma = client.create_collection(
+    name=KOKOELMA_NIMI,
+    embedding_function=embedding_fn
+)
+
+# Luetaan kaikki .txt tiedostot data/-kansiosta
+dokumentit = []
+id_lista = []
+
+for tiedosto in os.listdir(DATA_KANSIO):
+    if tiedosto.endswith(".txt"):
+        polku = os.path.join(DATA_KANSIO, tiedosto)
+        with open(polku, "r", encoding="utf-8") as f:
+            teksti = f.read().strip()
+            dokumentit.append(teksti)
+            id_lista.append(tiedosto)
+            print(f"Luettu: {tiedosto}")
+
+# Tallennetaan ChromaDB:hen
+kokoelma.add(
+    documents=dokumentit,
+    ids=id_lista
+)
+
+print(f"\nValmis! {len(dokumentit)} tiedostoa tallennettu ChromaDB:hen.")
