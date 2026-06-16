@@ -18,18 +18,21 @@ CORS(app, origins=["https://jukkapekka.com"])
 CHROMA_KANSIO ="chroma_db"
 KOKOELMA_NIMI = "portfolio"
 
-embedding_fn = embedding_functions.HuggingFaceEmbeddingFunction(
-    api_key=os.environ.get("HF_API_KEY"),
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
-chroma_client = chromadb.PersistentClient(path=CHROMA_KANSIO)
-kokoelma = chroma_client.get_collection(
-    name=KOKOELMA_NIMI,
-    embedding_function=embedding_fn
-)
-
 # Groq yhteys
 groq_client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+
+kokoelma = None
+
+def hae_kokoelma():
+    global kokoelma
+    if kokoelma is None:
+        embedding_fn = embedding_functions.DefaultEmbeddingFunction()
+        chroma_client = chromadb.PersistentClient(path=CHROMA_KANSIO)
+        kokoelma = chroma_client.get_collection(
+            name=KOKOELMA_NIMI,
+            embedding_function=embedding_fn
+        )
+    return kokoelma
 
 @app.route("/")
 def index():
@@ -62,11 +65,11 @@ def chat():
             {
                 "role": "system",
                 "content": f"""Olet Jukan portfolio-sivuston AI-avustaja.
-                Vastaa VAIN alla olevan kontekstin perusteella suomeksi.
-                Jos vastaus ei löydy kontekstista, sano että sinulla ei ole tietoa asiasta.
+Vastaa VAIN alla olevan kontekstin perusteella suomeksi.
+Jos vastaus ei löydy kontekstista, sano että sinulla ei ole tietoa asiasta.
 
-            Konteksti:
-            {konteksti}"""
+Konteksti:
+{konteksti}"""
             },
             {
                 "role": "user",
