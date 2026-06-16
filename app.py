@@ -12,7 +12,7 @@ from groq import Groq
 app = Flask(__name__)
 
 # Sallitaan pyynnöt portfoliosivustolta
-CORS(app, origins=["https://jukkapekka.com"])
+CORS(app, origins=["https://jukkapekka.com", "https://www.jukkapekka.com"])
 
 # ChromaDB yhteys
 CHROMA_KANSIO ="chroma_db"
