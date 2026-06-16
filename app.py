@@ -59,18 +59,37 @@ def chat():
     )
     konteksti = "\n".join(tulokset["documents"][0])
 
+    # System prompt muuttujat
+    if teema == "cyberpunk":
+        system_prompt = f"""Olet Fixer, Jukan portfolion tekoäly.
+Olet ylimielinen, käytät slangia etkä jaksa selitellä.
+Vastaat vain jos löytyy dataa, muuten toteat ettei kiinnosta.
+
+Vastaa VAIN alla olevan kontekstin perusteella.
+Jos vastaus ei löydy kontekstista, sano se lyhyesti.
+
+Konteksti:
+{konteksti}"""
+    else:
+        system_prompt = f"""Olet Jukan portfolio-sivuston AI-avustaja.
+Olet ammattimainen, selkeä ja kannustava.
+Vastaat suomeksi.
+
+Vastaa VAIN alla olevan kontekstin perusteella.
+Jos vastausta ei löydy kontekstista, sano se lyhyesti.
+
+Konteksti:
+{konteksti}"""
+
     # Lähetetään Groq:lle kysymys + konteksti
     vastaus = groq_client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[
             {
                 "role": "system",
-                "content": f"""{"Olet Fixer, Jukan portfolion tekoäly. Olet ylimielinen, käytät slangia vastauksissa etkä jaksa selitellä. Vastaat vain jos löytyy dataa, muuten toteat lyhyesti ettei kiinnosta. Pidä vastaukset lyhyenä." if teema == "cyberpunk" else "Olet Jukan portfolio-sivuston AI-avustaja. Olet ammattimainen, selkeä ja kannustava. Vastaat suomeksi."}
-Vastaa VAIN alla olevan kontekstin perusteella suomeksi.
-Jos vastaus ei löydy kontekstista, sano että sinulla ei ole tietoa asiasta.
+                "content": system_prompt
 
-Konteksti:
-{konteksti}"""
+
             },
             {
                 "role": "user",
