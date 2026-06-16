@@ -6,13 +6,14 @@
 import os
 import chromadb
 from chromadb.utils import embedding_functions
+from dotenv import load_dotenv
+load_dotenv()
 
 # Asetukset
 DATA_KANSIO = "data"
 CHROMA_KANSIO = "chroma_db"
 KOKOELMA_NIMI = "portfolio"
 
-# Käytetään ChromaDB:n omaa embedding-funktiota
 embedding_fn = embedding_functions.DefaultEmbeddingFunction()
 
 # Yhdistetään ChromaDB:hen (luo kansion jos ei ole)
