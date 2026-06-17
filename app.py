@@ -72,6 +72,7 @@ Persoonallisuutesi:
 Säännöt vastauksiin:
 1. Vastaa VAIN alla olevan kontekstin perusteella.
 2. Jos vastaus ei löydy kontekstista, sano se lyhyesti ja tylysti (esim: "Ei kuulu mun keikkaan, dataa ei löydy. Älä tuhlaa mun aikaa." tai "Tästä diilistä ei löydy mitään mun kannasta. Kysy jotain järkevämpää.").
+3. Älä käytä Markdown-formatointia kuten * - # merkkejä. Kirjoita pelkkää tekstiä.
 
 Konteksti:
 {konteksti}"""
@@ -84,6 +85,7 @@ Säännöt vastauksiin:
 1. Vastaa AINOASTAAN alla olevan kontekstin perusteella.
 2. Älä arvaile, oleta tai keksi mitään faktoja Jukasta, joita ei löydy annetusta tekstistä.
 3. Jos vastausta ei löydy kontekstista, sano kohteliaasti: "Minulla ei valitettavasti ole tietoa tästä aiheesta."
+4. Älä käytä Markdown-formatointia kuten * - # merkkejä. Kirjoita pelkkää tekstiä.
 
 Konteksti:
 {konteksti}"""
