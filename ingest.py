@@ -14,6 +14,12 @@ DATA_KANSIO = "data"
 CHROMA_KANSIO = "chroma_db"
 KOKOELMA_NIMI = "portfolio"
 
+# Chunking asetukset
+# Montako merkkiä per pala
+# Kuinka monta merkkiä palat jakavat keskenään
+CHUNK_KOKO = 500
+CHUNK_PAALLEKKAIN = 50
+
 embedding_fn = embedding_functions.DefaultEmbeddingFunction()
 
 # Yhdistetään ChromaDB:hen (luo kansion jos ei ole)
@@ -31,6 +37,18 @@ kokoelma = client.create_collection(
     embedding_function=embedding_fn
 )
 
+def pilko_teksti(teksti, koko, paallekkain):
+
+    # Pilkkoo tekstin paloihin joissa on päällekkäisyyttä
+    palat = []
+    alku = 0
+    while alku < len(teksti):
+        loppu = alku + koko
+        pala = teksti[alku:loppu]
+        palat.append(pala)
+        alku += koko - paallekkain
+    return palat
+
 # Luetaan kaikki .txt tiedostot data/-kansiosta
 dokumentit = []
 id_lista = []
@@ -40,9 +58,17 @@ for tiedosto in os.listdir(DATA_KANSIO):
         polku = os.path.join(DATA_KANSIO, tiedosto)
         with open(polku, "r", encoding="utf-8") as f:
             teksti = f.read().strip()
-            dokumentit.append(teksti)
-            id_lista.append(tiedosto)
-            print(f"Luettu: {tiedosto}")
+
+        # Pilkotaan teksti paloihin
+        palat = pilko_teksti(teksti, CHUNK_KOKO, CHUNK_PAALLEKKAIN)
+
+        for i, pala in enumerate(palat):
+            dokumentit.append(pala)
+
+            # ID muodostuu tiedostonimestä ja palan numerosta
+            id_lista.append(f"{tiedosto}_chunk_{i}")
+
+        print(f"Luettu: {tiedosto} ({len(palat)} palaa)")
 
 # Tallennetaan ChromaDB:hen
 kokoelma.add(
@@ -50,4 +76,4 @@ kokoelma.add(
     ids=id_lista
 )
 
-print(f"\nValmis! {len(dokumentit)} tiedostoa tallennettu ChromaDB:hen.")
+print(f"\nValmis! {len(dokumentit)} palaa tallennettu ChromaDB:hen.")
