@@ -90,7 +90,7 @@ Konteksti:
 
     # Lähetetään Groq:lle kysymys + konteksti
     vastaus = groq_client.chat.completions.create(
-        model="gemma2-9b-it",
+        model="llama-3.3-70b-versatile",
         messages=[
             {
                 "role": "system",
