@@ -58,6 +58,7 @@ for tiedosto in os.listdir(DATA_KANSIO):
         polku = os.path.join(DATA_KANSIO, tiedosto)
         with open(polku, "r", encoding="utf-8") as f:
             teksti = f.read().strip()
+        teksti = teksti.replace("\n", " ")
 
         # Pilkotaan teksti paloihin
         palat = pilko_teksti(teksti, CHUNK_KOKO, CHUNK_PAALLEKKAIN)
