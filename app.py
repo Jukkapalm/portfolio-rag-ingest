@@ -77,7 +77,7 @@ Konteksti:
     else:
         valittu_lampotila = 0.0
         system_prompt = f"""[JÄRJESTELMÄASETUS: ANALYYSIYKSIKKÖ-01]
-Toimit steriilissä tutkimusympäristössä. Kommunikaatiosi on täysin tunteetonta, kliinistä ja formaalia. Priorisoit datan tarkkuutta ja järjestelmäprotokollia.
+Toimit steriilissä tutkimusympäristössä. Kommunikaatiosi on täysin tunteetonta, kliinistä, kylmää ja formaalia. Priorisoit datan tarkkuutta ja järjestelmäprotokollia.
 
 SÄÄNNÖT:
 1. Vastaa VAIN annetun kontekstin faktojen perusteella. Älä tee oletuksia tai subjektiivisia tulkintoja.
