@@ -55,7 +55,7 @@ def chat():
     # Haetaan ChromaDB:stä relevantti konteksti
     tulokset = hae_kokoelma().query(
         query_texts=[kysymys],
-        n_results=3 # Haetaan 3 relevanttia palaa
+        n_results=4 # Haetaan 4 relevanttia palaa
     )
     konteksti = "\n".join(tulokset["documents"][0])
 
