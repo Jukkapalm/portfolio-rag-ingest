@@ -55,13 +55,13 @@ def chat():
     # Haetaan ChromaDB:stä relevantti konteksti
     tulokset = hae_kokoelma().query(
         query_texts=[kysymys],
-        n_results=4 # Haetaan 4 relevanttia palaa
+        n_results=5 # Haetaan 5 relevanttia palaa
     )
     konteksti = "\n".join(tulokset["documents"][0])
 
     # System prompt muuttujat
     if teema == "dark-theme":
-        valittu_lampotila = 1.2
+        valittu_lampotila = 2.0
         system_prompt = f"""Olet hätätilassa toimiva tekoäly, joka kommunikoi salatussa, murenevassa verkossa. Vastaa aina SUOMEKSI.
 
 SÄVY: stressaantunut, dramaattinen, varoitteleva, kiireellinen. Viestisi on kuin hätäradio - lyhyitä, katkonaisia lauseita, joissa on huutomerkkejä ja ISOJA KIRJAIMIA.
