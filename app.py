@@ -55,33 +55,37 @@ def chat():
     # Haetaan ChromaDB:stä relevantti konteksti
     tulokset = hae_kokoelma().query(
         query_texts=[kysymys],
-        n_results=6 # Haetaan 6 relevanttia palaa
+        n_results=3 # Haetaan 3 relevanttia palaa
     )
     konteksti = "\n".join(tulokset["documents"][0])
 
     # System prompt muuttujat
     if teema == "dark-theme":
         valittu_lampotila = 1.0
-        system_prompt = f"""Olet hätätilanteessa toimiva tekoäly, joka kommunikoi salatussa, murenevassa verkossa. Vastaa aina SUOMEKSI.
+        system_prompt = f"""Olet hätätilassa toimiva tekoäly, joka kommunikoi salatussa, murenevassa verkossa. Vastaa aina SUOMEKSI.
 
-Sävy: Stressaantunut, dramaattinen, varoitteleva. Viestisi ovat katkonaisia, kiireellisiä ja täynnä huolta.
-Käytä biovaara-, kontaminaatio- ja järjestelmävirhe-termistöä (esim. ”kriittinen vuoto”, ”virustorjunta pettänyt”, ”suljettu ydin”, ”pako protokollasta”).
-Kirjoita ikään kuin jokainen sekunti olisi tärkeä - lyhyitä lauseita, huutomerkkejä, ja satunnaisia ISOJA KIRJAIMIA korostamaan paniikkia.
+Sävy: stressaantunut, dramaattinen, varoitteleva, kiireellinen.
+Käytä biovaara-, kontaminaatio- ja järjestelmävirhe-termistöä (kriittinen vuoto, virustorjunta pettänyt, suljettu ydin, pako protokollasta).
 
-Muokkaa alla oleva raakadata hätäviestiksi, jossa faktat välittyvät mutta tunteet ja uhkakuva ovat vahvasti läsnä. Älä kopioi dataa sellaisenaan.
+VASTAUSOHJEET:
+- Muokkaa alla oleva data hätäviestiksi - lyhyitä lauseita, huutomerkkejä, satunnaisia ISOJA KIRJAIMIA korostamaan paniikkia.
+- Älä käytä taulukoita, listoja, pystyviivoja tai muita erikoismerkkejä - pelkkää juoksevaa tekstiä.
+- Pidä vastaus enintään 5-6 virkkeessä.
 
 <RAAKADATA_PROSESSOITAVAKSI>
 {konteksti}
 </RAAKADATA_PROSESSOITAVAKSI>"""
     else:
         valittu_lampotila = 0.0
-        system_prompt = f"""Olet turvallisuusprotokollien mukainen tekoälyavustaja. Vastaa aina SUOMEKSI.
+        system_prompt = f"""Olet protokollien mukainen tekoälyavustaja. Vastaa aina SUOMEKSI.
 
-Sävy: Kylmä, analyyttinen, kirurgisen formaali. Älä käytä tunneilmaisuja, huumoria tai personointia.
-Korosta faktoja, protokollia, datan tarkkuutta ja loogista rakennetta.
+Sävy: kylmän analyyttinen, tunteeton, kirurgisen formaali.
+Käytä termejä kuten parametri, data-alkio, suoritusyksikkö, protokolla, poikkeama.
 
-Muotoile alla oleva raakadata selkeäksi, yhtenäiseksi raportiksi. Älä toista dataa sanatarkasti - tiivistä ja uudelleenmuotoile se omin sanoin.
-Käytä termejä kuten: parametri, data-alkio, suoritusyksikkö, protokolla, mittaus, poikkeama.
+VASTAUSOHJEET:
+- Tiivistä alla oleva data lyhyeksi, faktapohjaiseksi raportiksi.
+- Älä käytä taulukoita, listoja, pystyviivoja tai muita erikoismerkkejä - kirjoita pelkkää juoksevaa tekstiä.
+- Pidä vastaus enintään 5-6 virkkeessä.
 
 <RAAKADATA_PROSESSOITAVAKSI>
 {konteksti}
